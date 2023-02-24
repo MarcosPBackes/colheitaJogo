@@ -5,7 +5,7 @@ export class Village {
         this.image = image;
     }
 
-    draw(ctx) {
-        ctx.drawImage(this.image, this.x, this.y);
+    draw(ctx, cameraX, cameraY) {
+        ctx.drawImage(this.image, this.x + cameraX, this.y + cameraY);
     }
 }

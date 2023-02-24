@@ -22,6 +22,7 @@ export class Game {
         document.addEventListener('keydown', (event) => {
             if (event.code === 'ArrowUp' || event.code === 'KeyW') {
               this.player.moveUp();
+              console.log('sim');
             } else if (event.code === 'ArrowDown' || event.code === 'KeyS') {
               this.player.moveDown();
             } else if (event.code === 'ArrowLeft' || event.code === 'KeyA') {
@@ -41,9 +42,14 @@ export class Game {
     update() {
         this.ctx.fillStyle = 'white';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+        
+        //Calcula a posiçao da camera em relaçao ao jogador
+        const cameraX = this.canvas.width / 2 - this.player.x;
+        const cameraY = this.canvas.height / 2 - this.player.y;
 
-        this.village.draw(this.ctx);
-        this.player.draw(this.ctx);
+        //Desenha a vila e o jogador, com o deslocamento da camera
+        this.village.draw(this.ctx, cameraX, cameraY);
+        this.player.draw(this.ctx, cameraX, cameraY);
 
         requestAnimationFrame(() => this.update());
     }

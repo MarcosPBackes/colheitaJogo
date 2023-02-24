@@ -6,7 +6,7 @@ export class Player {
         this.speed = 5;
     }
 
-    draw(ctx) {
+    draw(ctx, cameraX, cameraY) {
         const spriteWidth = this.image.width / 4;
         const spriteHeight = this.image.height;
         ctx.drawImage(
@@ -15,8 +15,8 @@ export class Player {
             0,
             spriteWidth,
             spriteHeight, 
-            this.x - spriteWidth / 2, 
-            this.y - spriteHeight / 2, 
+            this.x - spriteWidth / 2 + cameraX, 
+            this.y - spriteHeight / 2 + cameraY, 
             spriteWidth, 
             spriteHeight
         );
