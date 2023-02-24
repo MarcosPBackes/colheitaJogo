@@ -1,0 +1,28 @@
+const canvas = document.querySelector('canvas')
+const ctx = canvas.getContext('2d')
+
+canvas.width =  1024
+canvas.height = 576
+
+ctx.fillStyle = 'white'
+ctx.fillRect(0, 0, canvas.width, canvas.height)
+
+const vilarejoUm = new Image()
+vilarejoUm.src = './img/maps/mapa_vilarejo_01.png'
+
+const jogadorImagem = new Image()
+jogadorImagem.src = './img/npcs/personagem_baixo.png'
+
+vilarejoUm.onload = () => {
+    ctx.drawImage(vilarejoUm, -3424, -2950)
+    ctx.drawImage(jogadorImagem,
+        0,
+        0,
+        jogadorImagem.width / 4,
+        jogadorImagem.height,
+        canvas.width / 2 - (jogadorImagem.width / 4) / 2,
+        canvas.height / 2 - jogadorImagem.height / 2,
+        jogadorImagem.width / 4,
+        jogadorImagem.height
+    )
+}
