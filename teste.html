@@ -26,3 +26,103 @@ vilarejoUm.onload = () => {
         jogadorImagem.height
     )
 }
+
+export class Player {
+    constructor(x, y, images) {
+        this.x = x;
+        this.y = y;
+        this.images = images;
+        this.speed = 5;
+        this.frameCount = 0;
+        this.currentFrame = 0;
+        this.direction = 'down';        
+    }
+    //Funçao que desenha o jogador
+    draw(ctx, cameraX, cameraY) {
+        const spriteWidth = this.images[0].width / 4;
+        const spriteHeight = this.images[0].height;       
+        const spriteX = (this.currentFrame % 4) * spriteWidth;
+        const spriteY = 0;
+        ctx.drawImage(
+            this.images[this.currentFrame % this.images.length],
+            spriteX,
+            spriteY,
+            spriteWidth,
+            spriteHeight,
+            this.x - spriteWidth / 2 + cameraX, 
+            this.y - spriteHeight / 2 + cameraY, 
+            spriteWidth, 
+            spriteHeight
+      );
+    }
+    
+    moveUp() {
+        this.y -= this.speed;
+        this.currentFrame = (this.currentFrame + 1) % 16; // 4 imagens * 4 frames
+    }
+
+    moveDown() {
+        this.y += this.speed;
+        this.currentFrame = (this.currentFrame + 1) % 16;
+    }
+
+    moveLeft() {
+        this.x -= this.speed;
+        this.currentFrame = (this.currentFrame + 1) % 16;
+    }
+
+    moveRight() {
+        this.x += this.speed;
+        this.currentFrame = (this.currentFrame + 1) % 16;
+    }
+}
+
+let img = new Image();
+img.src = 'https://opengameart.org/sites/default/files/Green-Cap-Character-16x18.png';
+img.onload = function() {
+  init();
+};
+
+let canvas = document.querySelector('canvas');
+let ctx = canvas.getContext('2d');
+
+const scale = 2;
+const width = 16;
+const height = 18;
+const scaledWidth = scale * width;
+const scaledHeight = scale * height;
+
+function drawFrame(frameX, frameY, canvasX, canvasY) {
+  ctx.drawImage(img,
+                frameX * width, frameY * height, width, height,
+                canvasX, canvasY, scaledWidth, scaledHeight);
+}
+
+const cycleLoop = [0, 1, 0, 2];
+let currentLoopIndex = 0;
+let frameCount = 0;
+let currentDirection = 0;
+
+function step() {
+  frameCount++;
+  if (frameCount < 15) {
+    window.requestAnimationFrame(step);
+    return;
+  }
+  frameCount = 0;
+  ctx.clearRect(0, 0, canvas.width, canvas.height);
+  drawFrame(cycleLoop[currentLoopIndex], currentDirection, 0, 0);
+  currentLoopIndex++;
+  if (currentLoopIndex >= cycleLoop.length) {
+    currentLoopIndex = 0;
+    currentDirection++;
+  }
+  if (currentDirection >= 4) {
+    currentDirection = 0;
+  }
+  window.requestAnimationFrame(step);
+}
+
+function init() {
+  window.requestAnimationFrame(step);
+}
